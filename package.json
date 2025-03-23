@@ -1,0 +1,19 @@
+{
+    "name": "search-helu",
+    "version": "1.0.0",
+    "description": "Better Search",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "node test/test.js"
+    },
+    "author": "HELU TEAM - Ba Đôi Thông",
+    "license": "MIT",
+    "dependencies": {
+        "my-express-library": "file:../search-helu"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "keywords": [],
+    "type": "commonjs"
+}

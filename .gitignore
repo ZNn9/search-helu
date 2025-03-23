@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Optional: Mac/Linux system files
+.DS_Store
+
+# Optional: VSCode settings (nếu bạn dùng VSCode, tránh đẩy config cá nhân)
+.vscode/
+
+# Environment variables (nếu dùng cho test local, không nên push)
+.env
+
+# Coverage reports (nếu sau này bạn dùng test coverage)
+coverage/
+
+# Output folders (nếu có build step sau này)
+dist/
+build/
+
+# Optional: OS-specific
+Thumbs.db
