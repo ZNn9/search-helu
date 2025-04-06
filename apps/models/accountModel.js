@@ -44,6 +44,21 @@ class AccountModel {
             throw new Error(`Lỗi khi lấy tài khoản có ID ${id}: ${error.message}`)
         }
     }
+
+    async getRolesByUserId(userId) {
+        try {
+            const sql = `
+                SELECT r.roleName
+                FROM roledetails rd
+                JOIN role r ON rd.idRole = r.idRole
+                WHERE rd.idAccount = ?
+            `;
+            const result = await db.query(sql, [userId]);
+            return result.rows.map(row => row.roleName);
+        } catch (error) {
+            throw new Error(`Lỗi khi lấy vai trò của người dùng: ${error.message}`);
+        }
+    }
 }
 
 module.exports = AccountModel;
