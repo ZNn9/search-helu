@@ -9,7 +9,7 @@ const app = express();
 
 // Cấu hình CORS
 const corsOptions = {
-    origin: process.env.ALLOWED_ORIGINS || 'http://localhost:3000',
+    origin: process.env.ALLOWED_ORIGINS || 'http://localhost:3000' || 'http://localhost:80',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 };

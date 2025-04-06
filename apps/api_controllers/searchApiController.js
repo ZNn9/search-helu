@@ -25,9 +25,34 @@ class SearchApiController {
             const normalizedTable = tableName.toLowerCase();
             const userRoles = req.user?.roles || []; // Lấy roles từ req.user
 
-            // Phân quyền theo vai trò
+            // Log dữ liệu từ req.user để kiểm tra
+            console.log('req.user:', req.user);
+
+            // Chuyển đổi roles từ token thành danh sách tên vai trò
+            const roleNames = userRoles.map(role => role.toLowerCase());
+
+            // Log danh sách vai trò
+            console.log('Role names:', roleNames);
+
+            // Xác định vai trò cao nhất
+            const highestRole = roleNames.includes('admin')
+                ? 'admin'
+                : roleNames.includes('user')
+                ? 'user'
+                : 'guest';
+
+            console.log('Highest role:', highestRole);
+
+            // Nếu là Admin, bỏ qua kiểm tra quyền
+            if (highestRole === 'admin') {
+                const columnList = columns ? columns.split(',') : ['*'];
+                const results = await dbModel.searchInDB(normalizedTable, columnList, filters);
+                return res.json(results);
+            }
+
+            // Lấy quyền theo vai trò
             const tablePermissions = {
-                User: {
+                user: {
                     allowedTables: ['course', 'lesson', 'account'],
                     allowedColumns: {
                         account: ['idAccount', 'name', 'email'],
@@ -35,7 +60,7 @@ class SearchApiController {
                         lesson: null,
                     },
                 },
-                Guest: {
+                guest: {
                     allowedTables: ['course', 'lesson', 'account'],
                     allowedColumns: {
                         account: ['idAccount', 'name', 'email'],
@@ -45,21 +70,6 @@ class SearchApiController {
                 },
             };
 
-            let highestRole = 'Guest';
-            if (userRoles.includes('Admin')) {
-                highestRole = 'Admin';
-            } else if (userRoles.includes('User')) {
-                highestRole = 'User';
-            }
-            console.log('Highest role:', highestRole);
-            // Nếu là Admin, bỏ qua kiểm tra quyền
-            if (highestRole === 'Admin') {
-                const columnList = columns ? columns.split(',') : ['*'];
-                const results = await dbModel.searchInDB(normalizedTable, columnList, filters);
-                return res.json(results);
-            }
-
-            // Lấy quyền theo vai trò
             const permissions = tablePermissions[highestRole];
 
             // Kiểm tra quyền truy cập bảng
